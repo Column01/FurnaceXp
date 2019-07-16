@@ -1,0 +1,10 @@
+name: FurnaceXp
+version: 1.0
+author: Colin Andress
+main: com.colinandress.furnacexp.FurnaceXp
+api-version: 1.14
+commands:
+  furnacexp:
+    description: Get the XP amount stored in a furnace
+    usage: Run /furnacexp while looking at a furnace
+    aliases: [fxp, furnaceexperience]
