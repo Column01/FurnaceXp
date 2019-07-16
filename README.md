@@ -1,7 +1,7 @@
 # FurnaceXp
 A simple spigot plugin to get the XP stored in a furnace.
 
-Designed for `1.14` but it is theoritcally Compatible with `1.13` but not tested (not sure what changes they made to recipes when they added the new blocks. Some might break but would be easy to fix)
+Designed for `1.14` but it is theoretically Compatible with `1.13` with some minor changes to the code. If there are people who would like that, I can make and compile a version for `1.13` :D Just leave an issue on the github or drop me a message on SpigotMC
 
 # Usage
 - Drop into plugins folder on server and restart server (or use `reload confirm` if you like to live on the edge).
@@ -30,7 +30,7 @@ Please Provide
 - List of other plugins installed on the server
 
 ### Note
-Plugins do sometimes have issues with each other. 99.99% of the time it is not either developers intent to cause this. Please be patient and we will try and sort out any conflicts that arise. With that being said, this is **NOT** and API. Please do not try to use it like one as it can cause unforseen issues and if you do, I will not help you with issues.
+Plugins do sometimes have issues with each other. 99.99% of the time it is not either developers intent to cause this. Please be patient and we will try and sort out any conflicts that arise. With that being said, this is **NOT** and API. Please do not try to use it like one as it can cause unforeseen issues and if you do, I will not help you with issues.
 
 ## Author
 - Column01
