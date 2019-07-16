@@ -3,6 +3,12 @@ A simple spigot plugin to get the XP stored in a furnace.
 
 Designed for `1.14` but it is theoritcally Compatible with `1.13` but not tested (not sure what changes they made to recipes when they added the new blocks. Some might break but would be easy to fix)
 
+# Usage
+- Drop into plugins folder on server and restart server (or use `reload confirm` if you like to live on the edge).
+- Look at a furnace, blast furnace or smoker
+- Run `/furnacexp` or one of the aliases of the command (`/fxp` and `/furnaceexperience`)
+- Enjoy :D
+
 # Contributing
 1. Download the repository
 2. Run [BuildTools](https://www.spigotmc.org/wiki/buildtools/) from Spigot and pick `--rev 1.14.3` (Required to build. Adds the Spigot stuff to localMaven() so we can build the dependencies)
