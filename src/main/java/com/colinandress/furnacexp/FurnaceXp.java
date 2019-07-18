@@ -6,7 +6,7 @@ public class FurnaceXp extends JavaPlugin {
 
     @Override
     public void onEnable(){
-        // Registering the command for the plugin
+        // Registering the commands
         this.getCommand("furnacexp").setExecutor(new com.colinandress.furnacexp.FurnaceXpCommand());
     }
 

@@ -1,10 +1,19 @@
 name: FurnaceXp
-version: 1.1
+version: 1.2
 author: Colin Andress
 main: com.colinandress.furnacexp.FurnaceXp
 api-version: 1.14
 commands:
   furnacexp:
     description: Get the XP amount stored in a furnace
-    usage: Run /furnacexp while looking at a furnace
+    usage: Run /furnacexp while looking at a furnace, blast furnace or smoker
     aliases: [fxp, furnaceexperience]
+    permission: furnacexp.fxp
+    permission-message: §cYou do not have permission to use this command. Contact an administrator if you believe this is an error.
+
+permissions:
+  furnacexp.*:
+    description: Grants the ability to use all commands from the FurnaceXp plugin
+    children:
+      furnacexp.fxp:
+        description: Allows the use of the /furnacexp command
