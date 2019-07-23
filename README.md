@@ -11,8 +11,8 @@ Designed for `1.14` but it is theoretically Compatible with `1.13` with some min
 
 # Contributing
 1. Download the repository
-2. Run [BuildTools](https://www.spigotmc.org/wiki/buildtools/) from Spigot and pick `--rev 1.14.3` (Required to build. Adds the Spigot stuff to localMaven() so we can build the dependencies)
-3. `gradle build`
+2. Run [BuildTools](https://www.spigotmc.org/wiki/buildtools/) from Spigot and use the option `--rev 1.14.4` (Required to build. Adds the Spigot stuff to localMaven() so we can get the dependencies)
+3. `gradle idea` to initialize the dependencies for the project and finally `gradle build`
 
 Make your changes and submit a pull request. Please comment your code and explain what changes you made and why. If it fixes an issue, please link the issue it fixes.
 

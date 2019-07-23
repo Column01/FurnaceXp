@@ -56,7 +56,6 @@ public class FurnaceXpCommand implements CommandExecutor {
                 }
                 else {
                     // If its not a compatible block, error
-                    player.sendMessage(prefix + ChatColor.RED + String.format("Looking at: " + "%s", TargetBlockType.getKey()));
                     player.sendMessage(prefix + ChatColor.RED + "You need to be looking at a furnace, blast furnace or smoker!");
                 }
             }
@@ -64,7 +63,6 @@ public class FurnaceXpCommand implements CommandExecutor {
         else {
             // If the sender is not a player (I.E. Server console)
             sender.sendMessage("You must be a player to use this command.");
-            return false;
         }
         return true;
     }
