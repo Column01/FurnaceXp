@@ -5,6 +5,7 @@ Designed for `1.14` but it is theoretically Compatible with `1.13` with some min
 
 # Usage
 - Drop into plugins folder on server and restart server (or use `reload confirm` if you like to live on the edge).
+- Set the command permissions found on SpigotMC
 - Look at a furnace, blast furnace or smoker
 - Run `/furnacexp` or one of the aliases of the command (`/fxp` and `/furnaceexperience`)
 - Enjoy :D

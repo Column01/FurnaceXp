@@ -1,7 +1,9 @@
 package com.colinandress.furnacexp;
 
+import net.minecraft.server.v1_14_R1.BlockPosition;
 import net.minecraft.server.v1_14_R1.NBTTagCompound;
 import net.minecraft.server.v1_14_R1.TileEntity;
+import org.bukkit.Location;
 
 import java.util.ArrayList;
 
@@ -36,5 +38,10 @@ public class HandleNBT {
             RecipeAmountArr.add(recipeamountN);
         }
         return RecipeAmountArr;
+    }
+
+    // Returns a new BlockPosition provided a Location
+    public static BlockPosition GetFurnacePosition(Location BlockLocation) {
+        return new BlockPosition(BlockLocation.getX(), BlockLocation.getY(), BlockLocation.getZ());
     }
 }
