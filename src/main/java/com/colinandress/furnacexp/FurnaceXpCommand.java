@@ -99,7 +99,9 @@ public class FurnaceXpCommand implements CommandExecutor {
                                             // Gather the tile entity from the CraftWorld and add it to a furnace array
                                             BlockPosition internalFurnacePosition = HandleNBT.GetFurnacePosition(block);
                                             TileEntity Furnace = cw.getHandle().getTileEntity(internalFurnacePosition);
-                                            Furnaces.add(Furnace);
+                                            if(Furnace != null) {
+                                                Furnaces.add(Furnace);
+                                            }
                                         }
                                         // Calculate the total stored XP in the furnaces, get the player's total experience and calculate their new level
                                         int FurnacesXp = (int) (FurnaceXpCalculation.GetFurnaceXpArray(Furnaces));
