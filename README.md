@@ -1,7 +1,9 @@
 # FurnaceXp
 A simple spigot plugin to get the XP stored in a furnace.
 
-Designed for `1.14` but it is theoretically Compatible with `1.13` with some minor changes to the code. If there are people who would like that, I can make and compile a version for `1.13` :D Just leave an issue on the github or drop me a message on SpigotMC
+## Version Info
+- `2.0.0` for MC 1.16
+- `1.5.1` for MC 1.14
 
 # Usage
 - Drop into plugins folder on server and restart server (or use `reload confirm` if you like to live on the edge).
@@ -12,7 +14,7 @@ Designed for `1.14` but it is theoretically Compatible with `1.13` with some min
 
 # Contributing
 1. Download the repository
-2. Run [BuildTools](https://www.spigotmc.org/wiki/buildtools/) from Spigot and use the option `--rev 1.14.4` (Required to build. Adds the Spigot stuff to localMaven() so we can get the dependencies)
+2. Run [BuildTools](https://www.spigotmc.org/wiki/buildtools/) from Spigot and use the option `--rev 1.16.2` (Required to build. Adds the Spigot stuff to localMaven() so we can get the dependencies)
 3. `gradle idea` to initialize the dependencies for the project and finally `gradle build`
 
 Make your changes and submit a pull request. Please comment your code and explain what changes you made and why. If it fixes an issue, please link the issue it fixes.
