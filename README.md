@@ -42,7 +42,7 @@ Please Provide
 
 ### Note
 
-Plugins do sometimes have issues with each other. 99.99% of the time it is not either developers intent to cause this. Please be patient and we will try and sort out any conflicts that arise. With that being said, this is **NOT** and API. Please do not try to use it like one as it can cause unforeseen issues and if you do, I will not help you with issues.
+Plugins do sometimes have issues with each other. 99.99% of the time it is not either developers intent to cause this. Please be patient and we will try and sort out any conflicts that arise. With that being said, this is **NOT** an API. Please do not try to use it like one as it can cause unforeseen issues and if you do, I will not help you with issues.
 
 ## Author
 
