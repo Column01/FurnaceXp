@@ -2,22 +2,21 @@ package com.colinandress.furnacexp;
 
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
-import net.minecraft.server.v1_14_R1.BlockPosition;
-import net.minecraft.server.v1_14_R1.NBTTagCompound;
-import net.minecraft.server.v1_14_R1.TileEntity;
+import net.minecraft.server.v1_16_R2.BlockPosition;
+import net.minecraft.server.v1_16_R2.NBTTagCompound;
+import net.minecraft.server.v1_16_R2.TileEntity;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.craftbukkit.v1_14_R1.CraftWorld;
+import org.bukkit.craftbukkit.v1_16_R2.CraftWorld;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.Set;
 
 public class FurnaceXpCommand implements CommandExecutor {
-    // Plugin Prefix
     static Multimap<Player, Location> blocks = ArrayListMultimap.create();
 
     @Override
@@ -26,26 +25,26 @@ public class FurnaceXpCommand implements CommandExecutor {
             Player player = (Player) sender;
             // Get the craft world, location, material and make a block position of the furnace forgetting the tile entity
             CraftWorld cw = (CraftWorld) player.getWorld();
-            Location TargetBlockLocation = player.getTargetBlock(null, 10).getLocation();
-            Material TargetBlockType = TargetBlockLocation.getBlock().getType();
-            BlockPosition FurnacePosition = HandleNBT.GetFurnacePosition(TargetBlockLocation);
+            Location targetBlockLocation = player.getTargetBlock(null, 10).getLocation();
+            Material targetBlockType = targetBlockLocation.getBlock().getType();
+            BlockPosition furnacePosition = HandleNBT.getFurnacePosition(targetBlockLocation);
             // Check if its a compatible block
                 if(args.length < 1) {
-                    if(isValidBlock(TargetBlockType)) {
+                    if(isValidBlock(targetBlockType)) {
                         if (player.hasPermission("furnacexp.fxp")) {
                             // Gather the tile entity from the CraftWorld
-                            TileEntity Furnace = cw.getHandle().getTileEntity(FurnacePosition);
+                            TileEntity Furnace = cw.getHandle().getTileEntity(furnacePosition);
                             if (Furnace != null) {
                                 // Get the NBT from the furnace and then get the recipe names and amounts
-                                NBTTagCompound FurnaceNBT = HandleNBT.getNBTOfFurnace(Furnace);
-                                ArrayList<String> RecipeArray = HandleNBT.getRecipeNames(FurnaceNBT);
-                                ArrayList<String> AmountArray = HandleNBT.getRecipeAmounts(FurnaceNBT);
+                                NBTTagCompound furnaceNBT = HandleNBT.getNBTOfFurnace(Furnace);
+                                ArrayList<String> recipeNames = HandleNBT.getRecipeNames(furnaceNBT);
+                                ArrayList<String> recipeAmounts = HandleNBT.getRecipeAmounts(furnaceNBT);
                                 // Calculate the furnace's stored XP, get the player's total experience and calculate their new level
-                                int FurnaceXp = (int) (FurnaceXpCalculation.GetFurnaceXp(RecipeArray, AmountArray));
+                                int furnaceXp = (int) (FurnaceXpCalculation.getFurnaceXp(recipeNames, recipeAmounts));
                                 int playerXP = player.getTotalExperience();
-                                int newLevels = (int) (FurnaceXpCalculation.getNewLevel(playerXP, FurnaceXp));
+                                int newLevels = (int) (FurnaceXpCalculation.getNewLevel(playerXP, furnaceXp));
                                 // Message the gathered data to the player
-                                player.sendMessage(FurnaceXpResponses.xpStored(FurnaceXp));
+                                player.sendMessage(FurnaceXpResponses.xpStored(furnaceXp));
                                 player.sendMessage(FurnaceXpResponses.playerXp(playerXP));
                                 player.sendMessage(FurnaceXpResponses.levelsAfter(newLevels));
                                 return true;
@@ -53,7 +52,7 @@ public class FurnaceXpCommand implements CommandExecutor {
                         }
                     } else {
                         // If its not a compatible block tell the user.
-                        player.sendMessage(FurnaceXpResponses.invalidblock);
+                        player.sendMessage(FurnaceXpResponses.INVALID_BLOCK);
                     }
                 }
                 if(args.length == 1) {
@@ -69,20 +68,20 @@ public class FurnaceXpCommand implements CommandExecutor {
                                 }
                             }
                             // Even if we didn't clear their cache (only happens when it's already empty) tell them we did.
-                            player.sendMessage(FurnaceXpResponses.emptyusercache);
+                            player.sendMessage(FurnaceXpResponses.EMPTIED_USER_CACHE);
                         } else {
                             // Player doesn't have permission
-                            player.sendMessage(FurnaceXpResponses.noperms);
+                            player.sendMessage(FurnaceXpResponses.NO_PERMS);
                         }
                     }
                     if(args[0].equalsIgnoreCase("clearall")) {
                         if(player.hasPermission("furnacexp.fxp.clearall")) {
                             // Empty all the blocks from the cache
                             blocks.clear();
-                            player.sendMessage(FurnaceXpResponses.emptyallcache);
+                            player.sendMessage(FurnaceXpResponses.EMPTIED_ALL_CACHE);
                         } else {
                             // Player doesn't have permission
-                            player.sendMessage(FurnaceXpResponses.noperms);
+                            player.sendMessage(FurnaceXpResponses.NO_PERMS);
                         }
                     }
                     if(args[0].equalsIgnoreCase("calculate") || args[0].equalsIgnoreCase("calc")) {
@@ -94,22 +93,22 @@ public class FurnaceXpCommand implements CommandExecutor {
                                 for(Player internalPlayer: players) {
                                     if(internalPlayer == player) {
                                         // Get all the block locations the player added
-                                        ArrayList<TileEntity> Furnaces = new ArrayList<>();
+                                        ArrayList<TileEntity> furnaces = new ArrayList<>();
                                         for(Location block: blocks.get(player)) {
                                             // Gather the tile entity from the CraftWorld and add it to a furnace array
-                                            BlockPosition internalFurnacePosition = HandleNBT.GetFurnacePosition(block);
-                                            TileEntity Furnace = cw.getHandle().getTileEntity(internalFurnacePosition);
-                                            if(Furnace != null) {
-                                                Furnaces.add(Furnace);
+                                            BlockPosition internalFurnacePosition = HandleNBT.getFurnacePosition(block);
+                                            TileEntity furnace = cw.getHandle().getTileEntity(internalFurnacePosition);
+                                            if(furnace != null) {
+                                                furnaces.add(furnace);
                                             }
                                         }
                                         // Calculate the total stored XP in the furnaces, get the player's total experience and calculate their new level
-                                        int FurnacesXp = (int) (FurnaceXpCalculation.GetFurnaceXpArray(Furnaces));
+                                        int furnacesXp = (int) (FurnaceXpCalculation.getFurnaceXpArray(furnaces));
                                         int playerXP = player.getTotalExperience();
-                                        int newLevels = (int) (FurnaceXpCalculation.getNewLevel(playerXP, FurnacesXp));
+                                        int newLevels = (int) (FurnaceXpCalculation.getNewLevel(playerXP, furnacesXp));
                                         // Message the gathered data to the player
-                                        player.sendMessage(FurnaceXpResponses.gettingxp);
-                                        player.sendMessage(FurnaceXpResponses.xpStored(FurnacesXp));
+                                        player.sendMessage(FurnaceXpResponses.GETTING_XP);
+                                        player.sendMessage(FurnaceXpResponses.xpStored(furnacesXp));
                                         player.sendMessage(FurnaceXpResponses.playerXp(playerXP));
                                         player.sendMessage(FurnaceXpResponses.levelsAfter(newLevels));
                                         // Empty the user's block cache
@@ -119,27 +118,27 @@ public class FurnaceXpCommand implements CommandExecutor {
                             }
                         } else {
                             // Player does not have permission
-                            player.sendMessage(FurnaceXpResponses.noperms);
+                            player.sendMessage(FurnaceXpResponses.NO_PERMS);
                         }
                     }
                     if(args[0].equalsIgnoreCase("add")) {
-                        if(isValidBlock(TargetBlockType)) {
+                        if(isValidBlock(targetBlockType)) {
                             if(player.hasPermission("furnacexp.fxp.add")) {
                                 // If they ran the add command, add the player and the block location to the blocks cache with the player who added them.
-                                if(!blocks.containsEntry(player, TargetBlockLocation)) {
-                                    blocks.put(player, TargetBlockLocation);
-                                    player.sendMessage(FurnaceXpResponses.addedBlock(TargetBlockLocation));
+                                if(!blocks.containsEntry(player, targetBlockLocation)) {
+                                    blocks.put(player, targetBlockLocation);
+                                    player.sendMessage(FurnaceXpResponses.addedBlock(targetBlockLocation));
                                 } else {
                                     // Block is already in the queue
-                                    player.sendMessage(FurnaceXpResponses.blockexists);
+                                    player.sendMessage(FurnaceXpResponses.BLOCK_EXISTS);
                                 }
                             } else {
                                 // Player doesn't have permission
-                                player.sendMessage(FurnaceXpResponses.noperms);
+                                player.sendMessage(FurnaceXpResponses.NO_PERMS);
                             }
                         } else {
                             // Not a valid block
-                            player.sendMessage(FurnaceXpResponses.invalidblock);
+                            player.sendMessage(FurnaceXpResponses.INVALID_BLOCK);
                         }
                     }
                 } else {
@@ -148,7 +147,7 @@ public class FurnaceXpCommand implements CommandExecutor {
                 }
         } else {
             // If the sender is not a player (I.E. Server console)
-            sender.sendMessage(FurnaceXpResponses.notplayer);
+            sender.sendMessage(FurnaceXpResponses.NOT_PLAYER);
         }
         return true;
     }

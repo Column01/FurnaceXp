@@ -1,46 +1,49 @@
 package com.colinandress.furnacexp;
 
-import net.minecraft.server.v1_14_R1.NBTTagCompound;
-import net.minecraft.server.v1_14_R1.TileEntity;
+import net.minecraft.server.v1_16_R2.NBTTagCompound;
+import net.minecraft.server.v1_16_R2.TileEntity;
 import org.bukkit.Bukkit;
 import org.bukkit.Keyed;
 import org.bukkit.inventory.CookingRecipe;
 import org.bukkit.inventory.Recipe;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 class FurnaceXpCalculation {
-    static double GetFurnaceXpArray(ArrayList<TileEntity> furnaces) {
-        double totalfurnacexp = 0.0;
+    static double getFurnaceXpArray(ArrayList<TileEntity> furnaces) {
+        double totalFurnaceXP = 0.0;
         // Loops over the furnaces to calculate the total furnace xp
         for(TileEntity Furnace: furnaces) {
             // Handle the NBT of the furnace
-            NBTTagCompound FurnaceNBT = HandleNBT.getNBTOfFurnace(Furnace);
+            NBTTagCompound furnaceNBT = HandleNBT.getNBTOfFurnace(Furnace);
             // Get Recipe names and Amounts from the furnace NBT
-            ArrayList<String> RecipeArray = HandleNBT.getRecipeNames(FurnaceNBT);
-            ArrayList<String> AmountArray = HandleNBT.getRecipeAmounts(FurnaceNBT);
+            ArrayList<String> RecipeArray = HandleNBT.getRecipeNames(furnaceNBT);
+            ArrayList<String> AmountArray = HandleNBT.getRecipeAmounts(furnaceNBT);
             // Get the furnace XP and the player's total experience
-            double FurnaceXp = GetFurnaceXp(RecipeArray, AmountArray);
-            totalfurnacexp = totalfurnacexp + FurnaceXp;
+            double FurnaceXp = getFurnaceXp(RecipeArray, AmountArray);
+            totalFurnaceXP = totalFurnaceXP + FurnaceXp;
         }
-        return totalfurnacexp;
+        return totalFurnaceXP;
     }
 
-    static double GetFurnaceXp(ArrayList<String> Recipe, ArrayList<String> Amount) {
-        double furnacexp = 0.0;
-        Map<String, String> FurnaceRecipes = new HashMap<>();
-        assert Recipe.size() == Amount.size();
+    static double getFurnaceXp(ArrayList<String> recipes, ArrayList<String> amounts) {
+        double furnaceXp = 0.0;
+        Map<String, String> furnaceRecipes = new HashMap<>();
+        assert recipes.size() == amounts.size();
         // For all the items in the two arrays, add them to a map as a Key: Value pair
-        for(int i=0; i<Recipe.size(); i++) {
-            FurnaceRecipes.put(Recipe.get(i), Amount.get(i));
+        for(int i = 0; i < recipes.size(); i++) {
+            furnaceRecipes.put(recipes.get(i), amounts.get(i));
         }
-        // For every item in the FurnaceRecipes, get the key and value of them and calculate the experience in the furnace
-        for(Map.Entry<String, String> recipe : FurnaceRecipes.entrySet()) {
+        // For every item in the furnaceRecipes, get the key and value of them and calculate the experience in the furnace
+        for(Map.Entry<String, String> recipe : furnaceRecipes.entrySet()) {
             double exp = getRecipeExp(recipe.getKey());
-            int amount = Integer.valueOf(recipe.getValue());
-            furnacexp = furnacexp + (exp * amount);
+            int amount = Integer.parseInt(recipe.getValue());
+            furnaceXp = furnaceXp + (exp * amount);
         }
-        return furnacexp;
+        return furnaceXp;
     }
 
     private static double getRecipeExp(String key) {
@@ -60,8 +63,8 @@ class FurnaceXpCalculation {
     }
 
     // Takes the player's XP and the furnaces stored XP, and obtains the new Level for the player upon collection
-    static double getNewLevel(double PlayerXp, double FurnaceXp) {
-        double newXp = PlayerXp + FurnaceXp;
+    static double getNewLevel(double playerXp, double furnaceXp) {
+        double newXp = playerXp + furnaceXp;
         return getLvlForXP(newXp);
     }
 

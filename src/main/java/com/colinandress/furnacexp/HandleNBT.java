@@ -1,8 +1,8 @@
 package com.colinandress.furnacexp;
 
-import net.minecraft.server.v1_14_R1.BlockPosition;
-import net.minecraft.server.v1_14_R1.NBTTagCompound;
-import net.minecraft.server.v1_14_R1.TileEntity;
+import net.minecraft.server.v1_16_R2.BlockPosition;
+import net.minecraft.server.v1_16_R2.NBTTagCompound;
+import net.minecraft.server.v1_16_R2.TileEntity;
 import org.bukkit.Location;
 
 import java.util.ArrayList;
@@ -18,30 +18,30 @@ class HandleNBT {
     // Returns an array of strings that contains all items that were smelted by the furnace
     static ArrayList<String> getRecipeNames(NBTTagCompound TileEntity) {
         // Getting how many recipes are in the furnace and initializing two arrays for their values
-        short recipesusedsize = TileEntity.getShort("RecipesUsedSize");
-        ArrayList<String> RecipeLocationArr = new ArrayList<>();
-        for(int i=0; i<recipesusedsize; i++) {
-            String LocationInternal = "RecipeLocation" + i;
-            String recipelocationN = TileEntity.getString(LocationInternal);
-            RecipeLocationArr.add(recipelocationN);
+        short recipesUsedSize = TileEntity.getShort("RecipesUsedSize");
+        ArrayList<String> recipeLocationArr = new ArrayList<>();
+        for(int i=0; i<recipesUsedSize; i++) {
+            String locationInternal = "RecipeLocation" + i;
+            String recipeLocationN = TileEntity.getString(locationInternal);
+            recipeLocationArr.add(recipeLocationN);
         }
-        return RecipeLocationArr;
+        return recipeLocationArr;
     }
 
     // Returns and array of strings that contains all the amounts of smelted items. Lines up with the recipe names for later use.
     static ArrayList<String> getRecipeAmounts(NBTTagCompound TileEntity) {
-        short recipesusedsize = TileEntity.getShort("RecipesUsedSize");
-        ArrayList<String> RecipeAmountArr = new ArrayList<>();
-        for(int i=0; i<recipesusedsize; i++) {
+        short recipesUsedSize = TileEntity.getShort("RecipesUsedSize");
+        ArrayList<String> recipeAmountArr = new ArrayList<>();
+        for(int i=0; i<recipesUsedSize; i++) {
             String AmountInternal = "RecipeAmount" + i;
-            String recipeamountN = Integer.toString(TileEntity.getInt(AmountInternal));
-            RecipeAmountArr.add(recipeamountN);
+            String recipeAmountN = Integer.toString(TileEntity.getInt(AmountInternal));
+            recipeAmountArr.add(recipeAmountN);
         }
-        return RecipeAmountArr;
+        return recipeAmountArr;
     }
 
     // Returns a new BlockPosition provided a Location
-    static BlockPosition GetFurnacePosition(Location BlockLocation) {
+    static BlockPosition getFurnacePosition(Location BlockLocation) {
         return new BlockPosition(BlockLocation.getX(), BlockLocation.getY(), BlockLocation.getZ());
     }
 }
