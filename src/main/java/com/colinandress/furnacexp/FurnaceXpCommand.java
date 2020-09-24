@@ -3,7 +3,6 @@ package com.colinandress.furnacexp;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
 import net.minecraft.server.v1_16_R2.BlockPosition;
-import net.minecraft.server.v1_16_R2.NBTTagCompound;
 import net.minecraft.server.v1_16_R2.TileEntity;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -14,6 +13,7 @@ import org.bukkit.craftbukkit.v1_16_R2.CraftWorld;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Set;
 
 public class FurnaceXpCommand implements CommandExecutor {
@@ -33,14 +33,11 @@ public class FurnaceXpCommand implements CommandExecutor {
                     if(isValidBlock(targetBlockType)) {
                         if (player.hasPermission("furnacexp.fxp")) {
                             // Gather the tile entity from the CraftWorld
-                            TileEntity Furnace = cw.getHandle().getTileEntity(furnacePosition);
-                            if (Furnace != null) {
-                                // Get the NBT from the furnace and then get the recipe names and amounts
-                                NBTTagCompound furnaceNBT = HandleNBT.getNBTOfFurnace(Furnace);
-                                ArrayList<String> recipeNames = HandleNBT.getRecipeNames(furnaceNBT);
-                                ArrayList<String> recipeAmounts = HandleNBT.getRecipeAmounts(furnaceNBT);
+                            TileEntity furnace = cw.getHandle().getTileEntity(furnacePosition);
+                            if (furnace != null) {
+                                HashMap<String, Integer> recipesUsed = HandleNBT.getRecipesUsed(HandleNBT.getNBTOfFurnace(furnace));
                                 // Calculate the furnace's stored XP, get the player's total experience and calculate their new level
-                                int furnaceXp = (int) (FurnaceXpCalculation.getFurnaceXp(recipeNames, recipeAmounts));
+                                int furnaceXp = (int) (FurnaceXpCalculation.getFurnaceXp(recipesUsed));
                                 int playerXP = player.getTotalExperience();
                                 int newLevels = (int) (FurnaceXpCalculation.getNewLevel(playerXP, furnaceXp));
                                 // Message the gathered data to the player

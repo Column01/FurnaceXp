@@ -10,37 +10,28 @@ import org.bukkit.inventory.Recipe;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.Map;
 
 class FurnaceXpCalculation {
     static double getFurnaceXpArray(ArrayList<TileEntity> furnaces) {
-        double totalFurnaceXP = 0.0;
+        double totalFurnaceXP = 0d;
         // Loops over the furnaces to calculate the total furnace xp
-        for(TileEntity Furnace: furnaces) {
+        for(TileEntity furnace: furnaces) {
             // Handle the NBT of the furnace
-            NBTTagCompound furnaceNBT = HandleNBT.getNBTOfFurnace(Furnace);
+            NBTTagCompound furnaceNBT = HandleNBT.getNBTOfFurnace(furnace);
             // Get Recipe names and Amounts from the furnace NBT
-            ArrayList<String> RecipeArray = HandleNBT.getRecipeNames(furnaceNBT);
-            ArrayList<String> AmountArray = HandleNBT.getRecipeAmounts(furnaceNBT);
+            HashMap<String, Integer> recipesUsed = HandleNBT.getRecipesUsed(furnaceNBT);
             // Get the furnace XP and the player's total experience
-            double FurnaceXp = getFurnaceXp(RecipeArray, AmountArray);
-            totalFurnaceXP = totalFurnaceXP + FurnaceXp;
+            double furnaceXp = getFurnaceXp(recipesUsed);
+            totalFurnaceXP = totalFurnaceXP + furnaceXp;
         }
         return totalFurnaceXP;
     }
 
-    static double getFurnaceXp(ArrayList<String> recipes, ArrayList<String> amounts) {
-        double furnaceXp = 0.0;
-        Map<String, String> furnaceRecipes = new HashMap<>();
-        assert recipes.size() == amounts.size();
-        // For all the items in the two arrays, add them to a map as a Key: Value pair
-        for(int i = 0; i < recipes.size(); i++) {
-            furnaceRecipes.put(recipes.get(i), amounts.get(i));
-        }
-        // For every item in the furnaceRecipes, get the key and value of them and calculate the experience in the furnace
-        for(Map.Entry<String, String> recipe : furnaceRecipes.entrySet()) {
-            double exp = getRecipeExp(recipe.getKey());
-            int amount = Integer.parseInt(recipe.getValue());
+    static double getFurnaceXp(HashMap<String, Integer> recipesUsed) {
+        double furnaceXp = 0d;
+        for(String recipe: recipesUsed.keySet()) {
+            double exp = getRecipeExp(recipe);
+            int amount = recipesUsed.get(recipe);
             furnaceXp = furnaceXp + (exp * amount);
         }
         return furnaceXp;

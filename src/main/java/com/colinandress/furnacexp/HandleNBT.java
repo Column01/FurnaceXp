@@ -5,39 +5,23 @@ import net.minecraft.server.v1_16_R2.NBTTagCompound;
 import net.minecraft.server.v1_16_R2.TileEntity;
 import org.bukkit.Location;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 
 class HandleNBT {
 
     // Saves the furnace's NBT to a new NBTTagCompound
-    static NBTTagCompound getNBTOfFurnace(TileEntity Furnace) {
+    static NBTTagCompound getNBTOfFurnace(TileEntity furnace) {
         NBTTagCompound nbt = new NBTTagCompound();
-        return Furnace.save(nbt);
+        return furnace.save(nbt);
     }
 
-    // Returns an array of strings that contains all items that were smelted by the furnace
-    static ArrayList<String> getRecipeNames(NBTTagCompound TileEntity) {
-        // Getting how many recipes are in the furnace and initializing two arrays for their values
-        short recipesUsedSize = TileEntity.getShort("RecipesUsedSize");
-        ArrayList<String> recipeLocationArr = new ArrayList<>();
-        for(int i=0; i<recipesUsedSize; i++) {
-            String locationInternal = "RecipeLocation" + i;
-            String recipeLocationN = TileEntity.getString(locationInternal);
-            recipeLocationArr.add(recipeLocationN);
+    static HashMap<String, Integer> getRecipesUsed(NBTTagCompound furnace) {
+        NBTTagCompound recipesUsedTag = furnace.getCompound("RecipesUsed");
+        HashMap<String, Integer> recipesUsed = new HashMap<>();
+        for (String recipe: recipesUsedTag.getKeys()) {
+            recipesUsed.put(recipe, recipesUsedTag.getInt(recipe));
         }
-        return recipeLocationArr;
-    }
-
-    // Returns and array of strings that contains all the amounts of smelted items. Lines up with the recipe names for later use.
-    static ArrayList<String> getRecipeAmounts(NBTTagCompound TileEntity) {
-        short recipesUsedSize = TileEntity.getShort("RecipesUsedSize");
-        ArrayList<String> recipeAmountArr = new ArrayList<>();
-        for(int i=0; i<recipesUsedSize; i++) {
-            String AmountInternal = "RecipeAmount" + i;
-            String recipeAmountN = Integer.toString(TileEntity.getInt(AmountInternal));
-            recipeAmountArr.add(recipeAmountN);
-        }
-        return recipeAmountArr;
+        return recipesUsed;
     }
 
     // Returns a new BlockPosition provided a Location
