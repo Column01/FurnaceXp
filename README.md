@@ -4,8 +4,8 @@ A simple spigot plugin to get the XP stored in a furnace.
 
 ## Version Info
 
-- `2.0.0` for MC 1.16
-- `1.5.1` for MC 1.14
+- `2.x.x` for MC 1.16
+- `1.x.x` for MC 1.14
 
 # Usage
 
