@@ -1,8 +1,9 @@
 name: FurnaceXp
-version: 2.0.1
-author: Colin Andress
-main: com.colinandress.furnacexp.FurnaceXp
-api-version: 1.16
+version: 3.0.0
+author: Column01
+main: io.github.column01.furnacexp.FurnaceXp
+api-version: 1.17
+depend: [NBTAPI]
 commands:
   furnacexp:
     description: Get the XP amount stored in a furnace
@@ -10,7 +11,6 @@ commands:
     aliases: [fxp, furnaceexperience]
     permission: furnacexp.fxp
     permission-message: §cYou do not have permission to use this command. Contact an administrator if you believe this is an error.
-
 permissions:
   furnacexp.*:
     description: Grants the ability to use all commands from the FurnaceXp plugin
