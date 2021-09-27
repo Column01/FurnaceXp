@@ -1,7 +1,6 @@
-package com.colinandress.furnacexp;
+package io.github.column01.furnacexp.helpers;
 
-import net.minecraft.server.v1_16_R2.NBTTagCompound;
-import net.minecraft.server.v1_16_R2.TileEntity;
+import de.tr7zw.nbtapi.NBTTileEntity;
 import org.bukkit.Bukkit;
 import org.bukkit.Keyed;
 import org.bukkit.inventory.CookingRecipe;
@@ -11,15 +10,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 
-class FurnaceXpCalculation {
-    static double getFurnaceXpArray(ArrayList<TileEntity> furnaces) {
+public class ExperienceCalculation {
+    public static double getFurnaceXpArray(ArrayList<NBTTileEntity> furnaces) {
         double totalFurnaceXP = 0d;
         // Loops over the furnaces to calculate the total furnace xp
-        for(TileEntity furnace: furnaces) {
-            // Handle the NBT of the furnace
-            NBTTagCompound furnaceNBT = HandleNBT.getNBTOfFurnace(furnace);
-            // Get Recipe names and Amounts from the furnace NBT
-            HashMap<String, Integer> recipesUsed = HandleNBT.getRecipesUsed(furnaceNBT);
+        for(NBTTileEntity furnace: furnaces) {
+            // Get Recipe names and Amounts from the furnace
+            HashMap<String, Integer> recipesUsed = NBTHelpers.getRecipesUsed(furnace);
             // Get the furnace XP and the player's total experience
             double furnaceXp = getFurnaceXp(recipesUsed);
             totalFurnaceXP = totalFurnaceXP + furnaceXp;
@@ -27,7 +24,7 @@ class FurnaceXpCalculation {
         return totalFurnaceXP;
     }
 
-    static double getFurnaceXp(HashMap<String, Integer> recipesUsed) {
+    public static double getFurnaceXp(HashMap<String, Integer> recipesUsed) {
         double furnaceXp = 0d;
         for(String recipe: recipesUsed.keySet()) {
             double exp = getRecipeExp(recipe);
@@ -37,7 +34,7 @@ class FurnaceXpCalculation {
         return furnaceXp;
     }
 
-    private static double getRecipeExp(String key) {
+    public static double getRecipeExp(String key) {
         // Iterates over the bukkit recipes and then returns the experience of said recipe. Called recursively for each recipe in the FurnaceRecipes array
         Iterator<Recipe> recipeIterator = Bukkit.recipeIterator();
         while (recipeIterator.hasNext()) {
@@ -54,14 +51,14 @@ class FurnaceXpCalculation {
     }
 
     // Takes the player's XP and the furnaces stored XP, and obtains the new Level for the player upon collection
-    static double getNewLevel(double playerXp, double furnaceXp) {
+    public static double getNewLevel(double playerXp, double furnaceXp) {
         double newXp = playerXp + furnaceXp;
         return getLvlForXP(newXp);
     }
 
     // Takes an experience value and converts it to the corresponding level. Comments above each one is to convert levels to XP.
     // This is an estimation due to how Minecraft experience works, but is good enough for our purposes.
-    private static double getLvlForXP(double xp) {
+    public static double getLvlForXP(double xp) {
         if (xp <= 393) {
             // xp = level ^ 2 + 6 * level (0-16 levels)
             return Math.sqrt(xp + 9) - 3;
